@@ -549,6 +549,28 @@
       background: #475467;
     }
 
+    .record-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .record-copy {
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--blue-dark);
+      border-radius: 6px;
+      color: #ffffff;
+      background: var(--blue);
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .record-copy:hover {
+      background: var(--blue-dark);
+    }
+
     pre {
       margin: 0;
       padding: 14px;
@@ -571,6 +593,57 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
+    }
+
+    .setup-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .form-field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .form-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-field label {
+      color: var(--muted);
+      font-size: 0.84rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .form-field input,
+    .form-field textarea {
+      width: 100%;
+      min-height: 42px;
+      padding: 9px 10px;
+      border: 1px solid #b8c4d2;
+      border-radius: 6px;
+      color: var(--ink);
+      background: #ffffff;
+      font: inherit;
+    }
+
+    .form-field textarea {
+      min-height: 86px;
+      resize: vertical;
+    }
+
+    .form-field input:focus,
+    .form-field textarea:focus {
+      outline: 3px solid rgba(18, 100, 163, 0.18);
+      border-color: var(--blue);
+    }
+
+    .record-preview {
+      min-height: 220px;
+      white-space: pre-wrap;
     }
 
     .field {
@@ -607,6 +680,7 @@
       .page,
       .grid.two,
       .grid.three,
+      .setup-grid,
       .worksheet-grid {
         grid-template-columns: 1fr;
       }
@@ -690,7 +764,8 @@
 
       .hero-actions,
       .toc,
-      .copy-btn {
+      .copy-btn,
+      .record-actions {
         display: none;
       }
 
@@ -698,6 +773,7 @@
       .page,
       .grid.two,
       .grid.three,
+      .setup-grid,
       .worksheet-grid {
         display: block;
       }
@@ -812,6 +888,79 @@
     </aside>
 
     <div class="content">
+      <section id="worksheet" class="worksheet">
+        <div class="section-kicker">Fill This In First</div>
+        <h2>Engineer setup record</h2>
+        <p class="lede">
+          Enter the customer values here before working through the guide. The command blocks and examples below will update automatically. Blank fields use safe generic examples.
+        </p>
+
+        <form class="setup-grid" id="setup-form">
+          <div class="form-field">
+            <label for="customer-name">Customer name</label>
+            <input id="customer-name" name="customerName" autocomplete="organization" placeholder="Example Ltd">
+          </div>
+          <div class="form-field">
+            <label for="domain">Customer domain</label>
+            <input id="domain" name="domain" autocomplete="off" placeholder="contoso.com">
+          </div>
+          <div class="form-field">
+            <label for="public-ip">Sending public IP</label>
+            <input id="public-ip" name="publicIp" autocomplete="off" placeholder="203.0.113.10">
+          </div>
+          <div class="form-field">
+            <label for="mx-endpoint">MX endpoint</label>
+            <input id="mx-endpoint" name="mxEndpoint" autocomplete="off" placeholder="contoso-com.mail.protection.outlook.com">
+          </div>
+          <div class="form-field">
+            <label for="sender-address">Sender address</label>
+            <input id="sender-address" name="senderAddress" autocomplete="off" placeholder="scanner@contoso.com">
+          </div>
+          <div class="form-field">
+            <label for="test-recipient">Test recipient</label>
+            <input id="test-recipient" name="testRecipient" autocomplete="off" placeholder="testuser@contoso.com">
+          </div>
+          <div class="form-field">
+            <label for="connector-name">Connector name</label>
+            <input id="connector-name" name="connectorName" autocomplete="off" placeholder="SMTP Relay - Scan to Email - Site Name">
+          </div>
+          <div class="form-field">
+            <label for="printer-model-ip">Printer model / IP</label>
+            <input id="printer-model-ip" name="printerModelIp" autocomplete="off" placeholder="HP MFP / 192.168.1.50">
+          </div>
+          <div class="form-field full">
+            <label for="spf-before">SPF before</label>
+            <input id="spf-before" name="spfBefore" autocomplete="off" placeholder="v=spf1 include:spf.protection.outlook.com -all">
+          </div>
+          <div class="form-field full">
+            <label for="spf-after">SPF after</label>
+            <input id="spf-after" name="spfAfter" autocomplete="off" placeholder="v=spf1 ip4:203.0.113.10 include:spf.protection.outlook.com -all">
+          </div>
+          <div class="form-field">
+            <label for="firewall-contact">Firewall owner / contact</label>
+            <input id="firewall-contact" name="firewallContact" autocomplete="off" placeholder="Network team / supplier">
+          </div>
+          <div class="form-field">
+            <label for="engineer-name">Engineer</label>
+            <input id="engineer-name" name="engineerName" autocomplete="name" placeholder="Engineer name">
+          </div>
+          <div class="form-field full">
+            <label for="setup-notes">Result / notes</label>
+            <textarea id="setup-notes" name="setupNotes" placeholder="Record test result, errors, firewall changes, or message trace references."></textarea>
+          </div>
+        </form>
+
+        <div class="record-actions">
+          <button class="record-copy" id="copy-record" type="button">Copy ticket notes</button>
+          <button class="record-copy" id="clear-record" type="button">Clear fields</button>
+        </div>
+
+        <div class="code-block">
+          <div class="code-head"><span>Generated ticket notes</span></div>
+          <pre class="record-preview" id="record-preview"></pre>
+        </div>
+      </section>
+
       <section id="quick-values">
         <div class="section-kicker">Quick Reference</div>
         <h2>Known-good SMTP relay values</h2>
@@ -823,11 +972,11 @@
           <div class="mini-card highlight">
             <span class="label">Device SMTP settings</span>
             <dl class="kv">
-              <div><dt>SMTP server</dt><dd>Customer MX endpoint, for example <code>contoso-com.mail.protection.outlook.com</code></dd></div>
+              <div><dt>SMTP server</dt><dd>Customer MX endpoint, for example <code data-value="mxEndpoint">contoso-com.mail.protection.outlook.com</code></dd></div>
               <div><dt>Port</dt><dd><code>25</code></dd></div>
               <div><dt>TLS / STARTTLS</dt><dd>Enable where supported. Prefer STARTTLS or TLS 1.2+ capable modes.</dd></div>
               <div><dt>SMTP authentication</dt><dd>Off / none for IP-authenticated relay.</dd></div>
-              <div><dt>Sender address</dt><dd>Any address in a verified accepted domain, for example <code>scanner@contoso.com</code>.</dd></div>
+              <div><dt>Sender address</dt><dd>Any address in a verified accepted domain, for example <code data-value="senderAddress">scanner@contoso.com</code>.</dd></div>
             </dl>
           </div>
           <div class="mini-card warn">
@@ -877,7 +1026,7 @@
             <span class="label green">Windows checks</span>
             <div class="code-block">
               <div class="code-head"><span>PowerShell DNS and connectivity checks</span><button class="copy-btn" type="button">Copy</button></div>
-              <pre><code>nslookup -type=mx contoso.com
+              <pre><code id="cmd-windows-dns">nslookup -type=mx contoso.com
 Resolve-DnsName contoso.com -Type MX
 Test-NetConnection contoso-com.mail.protection.outlook.com -Port 25</code></pre>
             </div>
@@ -886,7 +1035,7 @@ Test-NetConnection contoso-com.mail.protection.outlook.com -Port 25</code></pre>
             <span class="label green">macOS checks</span>
             <div class="code-block">
               <div class="code-head"><span>Terminal DNS and connectivity checks</span><button class="copy-btn" type="button">Copy</button></div>
-              <pre><code>dig mx contoso.com
+              <pre><code id="cmd-macos-dns">dig mx contoso.com
 nc -vz contoso-com.mail.protection.outlook.com 25
 openssl s_client -starttls smtp -connect contoso-com.mail.protection.outlook.com:25</code></pre>
             </div>
@@ -950,12 +1099,12 @@ openssl s_client -starttls smtp -connect contoso-com.mail.protection.outlook.com
             <p>Before:</p>
             <div class="code-block">
               <div class="code-head"><span>Existing SPF</span><button class="copy-btn" type="button">Copy</button></div>
-              <pre><code>v=spf1 include:spf.protection.outlook.com -all</code></pre>
+              <pre><code id="example-spf-before">v=spf1 include:spf.protection.outlook.com -all</code></pre>
             </div>
             <p>After adding the site IP:</p>
             <div class="code-block">
               <div class="code-head"><span>Updated SPF</span><button class="copy-btn" type="button">Copy</button></div>
-              <pre><code>v=spf1 ip4:203.0.113.10 include:spf.protection.outlook.com -all</code></pre>
+              <pre><code id="example-spf-after">v=spf1 ip4:203.0.113.10 include:spf.protection.outlook.com -all</code></pre>
             </div>
           </div>
           <div class="mini-card warn">
@@ -972,7 +1121,7 @@ openssl s_client -starttls smtp -connect contoso-com.mail.protection.outlook.com
 
         <div class="code-block">
           <div class="code-head"><span>Verify SPF TXT records</span><button class="copy-btn" type="button">Copy</button></div>
-          <pre><code>nslookup -type=txt contoso.com
+          <pre><code id="cmd-spf-verify">nslookup -type=txt contoso.com
 Resolve-DnsName contoso.com -Type TXT
 dig txt contoso.com</code></pre>
         </div>
@@ -997,7 +1146,7 @@ dig txt contoso.com</code></pre>
             <tbody>
               <tr>
                 <td>SMTP server / smart host</td>
-                <td><code>contoso-com.mail.protection.outlook.com</code></td>
+                <td><code data-value="mxEndpoint">contoso-com.mail.protection.outlook.com</code></td>
                 <td>Use the customer's actual MX endpoint, not <code>smtp.office365.com</code>.</td>
               </tr>
               <tr>
@@ -1017,7 +1166,7 @@ dig txt contoso.com</code></pre>
               </tr>
               <tr>
                 <td>From / sender address</td>
-                <td><code>scanner@contoso.com</code></td>
+                <td><code data-value="senderAddress">scanner@contoso.com</code></td>
                 <td>Use an address in the verified Microsoft 365 accepted domain.</td>
               </tr>
               <tr>
@@ -1078,7 +1227,7 @@ dig txt contoso.com</code></pre>
             </ol>
             <div class="code-block">
               <div class="code-head"><span>Manual SMTP conversation</span><button class="copy-btn" type="button">Copy</button></div>
-              <pre><code>EHLO test.contoso.com
+              <pre><code id="cmd-smtp-manual">EHLO test.contoso.com
 MAIL FROM:&lt;scanner@contoso.com&gt;
 RCPT TO:&lt;testuser@contoso.com&gt;
 DATA
@@ -1093,7 +1242,7 @@ QUIT</code></pre>
             <span class="label green">macOS Terminal test</span>
             <div class="code-block">
               <div class="code-head"><span>Connectivity and STARTTLS</span><button class="copy-btn" type="button">Copy</button></div>
-              <pre><code>nc -vz contoso-com.mail.protection.outlook.com 25
+              <pre><code id="cmd-macos-starttls">nc -vz contoso-com.mail.protection.outlook.com 25
 openssl s_client -starttls smtp -connect contoso-com.mail.protection.outlook.com:25</code></pre>
             </div>
             <p>Use the printer test function after confirming port 25 is reachable. Confirm the message arrives in Inbox, Junk, or quarantine.</p>
@@ -1209,25 +1358,6 @@ openssl s_client -starttls smtp -connect contoso-com.mail.protection.outlook.com
         </div>
       </section>
 
-      <section id="worksheet" class="worksheet">
-        <div class="section-kicker">Printable Worksheet</div>
-        <h2>Engineer setup record</h2>
-        <p class="lede">Print or save this section with the ticket. Fill in values before changing DNS or connector settings.</p>
-
-        <div class="worksheet-grid">
-          <div class="field"><span>Customer / domain</span></div>
-          <div class="field"><span>Sending public IP</span></div>
-          <div class="field"><span>MX endpoint</span></div>
-          <div class="field"><span>Connector name</span></div>
-          <div class="field"><span>SPF before</span></div>
-          <div class="field"><span>SPF after</span></div>
-          <div class="field"><span>Printer model / IP</span></div>
-          <div class="field"><span>Test recipient</span></div>
-          <div class="field"><span>Firewall owner / contact</span></div>
-          <div class="field"><span>Result / notes</span></div>
-        </div>
-      </section>
-
       <section id="references" class="reference-strip">
         <div class="section-kicker">References</div>
         <h2>Microsoft guidance</h2>
@@ -1250,6 +1380,21 @@ openssl s_client -starttls smtp -connect contoso-com.mail.protection.outlook.com
   </footer>
 
   <script>
+    var setupDefaults = {
+      customerName: "Example Ltd",
+      domain: "contoso.com",
+      publicIp: "203.0.113.10",
+      mxEndpoint: "contoso-com.mail.protection.outlook.com",
+      senderAddress: "scanner@contoso.com",
+      testRecipient: "testuser@contoso.com",
+      connectorName: "SMTP Relay - Scan to Email - Site Name",
+      printerModelIp: "HP MFP / 192.168.1.50",
+      spfBefore: "v=spf1 include:spf.protection.outlook.com -all",
+      firewallContact: "Network team / supplier",
+      engineerName: "Engineer name",
+      setupNotes: "No result recorded yet."
+    };
+
     function fallbackCopy(text) {
       var area = document.createElement("textarea");
       area.value = text;
@@ -1265,6 +1410,146 @@ openssl s_client -starttls smtp -connect contoso-com.mail.protection.outlook.com
       }
     }
 
+    function copyText(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text).catch(function () {
+          fallbackCopy(text);
+        });
+      }
+
+      fallbackCopy(text);
+      return Promise.resolve();
+    }
+
+    function clean(value) {
+      return (value || "").trim();
+    }
+
+    function valueOf(name) {
+      var input = document.querySelector("[name='" + name + "']");
+      return clean(input ? input.value : "") || setupDefaults[name] || "";
+    }
+
+    function deriveMx(domain) {
+      if (!domain) {
+        return setupDefaults.mxEndpoint;
+      }
+
+      return domain.toLowerCase().replace(/[^a-z0-9. -]/g, "").replace(/\./g, "-") + ".mail.protection.outlook.com";
+    }
+
+    function getSetupValues() {
+      var domain = valueOf("domain").toLowerCase();
+      var publicIp = valueOf("publicIp");
+      var mxInput = clean(document.querySelector("[name='mxEndpoint']").value);
+      var mxEndpoint = mxInput || deriveMx(domain);
+      var senderInput = clean(document.querySelector("[name='senderAddress']").value);
+      var testRecipientInput = clean(document.querySelector("[name='testRecipient']").value);
+      var spfBefore = valueOf("spfBefore");
+      var spfAfterInput = clean(document.querySelector("[name='spfAfter']").value);
+
+      return {
+        customerName: valueOf("customerName"),
+        domain: domain,
+        publicIp: publicIp,
+        mxEndpoint: mxEndpoint,
+        senderAddress: senderInput || "scanner@" + domain,
+        testRecipient: testRecipientInput || "testuser@" + domain,
+        connectorName: valueOf("connectorName"),
+        printerModelIp: valueOf("printerModelIp"),
+        spfBefore: spfBefore,
+        spfAfter: spfAfterInput || spfBefore.replace(/v=spf1\s*/i, "v=spf1 ip4:" + publicIp + " "),
+        firewallContact: valueOf("firewallContact"),
+        engineerName: valueOf("engineerName"),
+        setupNotes: valueOf("setupNotes")
+      };
+    }
+
+    function setText(id, text) {
+      var node = document.getElementById(id);
+      if (node) {
+        node.textContent = text;
+      }
+    }
+
+    function buildRecord(v) {
+      return [
+        "M365 SMTP Relay Scan-to-Email Setup Record",
+        "Customer: " + v.customerName,
+        "Domain: " + v.domain,
+        "Sending public IP: " + v.publicIp,
+        "MX endpoint: " + v.mxEndpoint,
+        "Connector name: " + v.connectorName,
+        "Sender address: " + v.senderAddress,
+        "Test recipient: " + v.testRecipient,
+        "Printer model / IP: " + v.printerModelIp,
+        "Firewall owner / contact: " + v.firewallContact,
+        "SPF before: " + v.spfBefore,
+        "SPF after: " + v.spfAfter,
+        "Engineer: " + v.engineerName,
+        "Notes: " + v.setupNotes,
+        "",
+        "SMTP settings used:",
+        "SMTP server / smart host: " + v.mxEndpoint,
+        "Port: 25",
+        "TLS / STARTTLS: Enabled where supported",
+        "SMTP authentication: Disabled / none",
+        "Sender: " + v.senderAddress
+      ].join("\n");
+    }
+
+    function updateGeneratedContent() {
+      var v = getSetupValues();
+
+      document.querySelectorAll("[data-value='mxEndpoint']").forEach(function (node) {
+        node.textContent = v.mxEndpoint;
+      });
+
+      document.querySelectorAll("[data-value='senderAddress']").forEach(function (node) {
+        node.textContent = v.senderAddress;
+      });
+
+      setText("cmd-windows-dns", [
+        "nslookup -type=mx " + v.domain,
+        "Resolve-DnsName " + v.domain + " -Type MX",
+        "Test-NetConnection " + v.mxEndpoint + " -Port 25"
+      ].join("\n"));
+
+      setText("cmd-macos-dns", [
+        "dig mx " + v.domain,
+        "nc -vz " + v.mxEndpoint + " 25",
+        "openssl s_client -starttls smtp -connect " + v.mxEndpoint + ":25"
+      ].join("\n"));
+
+      setText("example-spf-before", v.spfBefore);
+      setText("example-spf-after", v.spfAfter);
+
+      setText("cmd-spf-verify", [
+        "nslookup -type=txt " + v.domain,
+        "Resolve-DnsName " + v.domain + " -Type TXT",
+        "dig txt " + v.domain
+      ].join("\n"));
+
+      setText("cmd-smtp-manual", [
+        "EHLO test." + v.domain,
+        "MAIL FROM:<" + v.senderAddress + ">",
+        "RCPT TO:<" + v.testRecipient + ">",
+        "DATA",
+        "Subject: Scan to email connector test",
+        "",
+        "This is a manual SMTP relay test.",
+        ".",
+        "QUIT"
+      ].join("\n"));
+
+      setText("cmd-macos-starttls", [
+        "nc -vz " + v.mxEndpoint + " 25",
+        "openssl s_client -starttls smtp -connect " + v.mxEndpoint + ":25"
+      ].join("\n"));
+
+      setText("record-preview", buildRecord(v));
+    }
+
     document.querySelectorAll(".copy-btn").forEach(function (button) {
       button.addEventListener("click", function () {
         var block = button.closest(".code-block");
@@ -1277,17 +1562,34 @@ openssl s_client -starttls smtp -connect contoso-com.mail.protection.outlook.com
           }, 1400);
         };
 
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(done).catch(function () {
-            fallbackCopy(text);
-            done();
-          });
-        } else {
-          fallbackCopy(text);
-          done();
-        }
+        copyText(text).then(done);
       });
     });
+
+    document.querySelectorAll("#setup-form input, #setup-form textarea").forEach(function (field) {
+      field.addEventListener("input", updateGeneratedContent);
+    });
+
+    document.getElementById("copy-record").addEventListener("click", function () {
+      var button = this;
+      var original = button.textContent;
+      updateGeneratedContent();
+      copyText(document.getElementById("record-preview").innerText).then(function () {
+        button.textContent = "Copied ticket notes";
+        window.setTimeout(function () {
+          button.textContent = original;
+        }, 1400);
+      });
+    });
+
+    document.getElementById("clear-record").addEventListener("click", function () {
+      document.querySelectorAll("#setup-form input, #setup-form textarea").forEach(function (field) {
+        field.value = "";
+      });
+      updateGeneratedContent();
+    });
+
+    updateGeneratedContent();
   </script>
 </body>
 </html>

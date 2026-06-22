@@ -4,6 +4,8 @@ A standalone visual runbook for 1st and 2nd line helpdesk engineers setting up s
 
 The guide walks engineers through creating an Exchange Online inbound connector authenticated by a static public IP address, finding the tenant MX endpoint, updating SPF, configuring common printer brands, testing SMTP connectivity, and troubleshooting common failures.
 
+It also includes a fillable engineer setup record at the top of the page. Values entered there automatically update the examples and command snippets below, and the generated ticket notes can be copied to the clipboard.
+
 ## Open the Guide
 
 Open [`index.html`](./index.html) directly in a browser.
@@ -24,7 +26,8 @@ No build step, package install, web server, or external assets are required. The
 - DNS, gateway, date/time, TLS, and firmware checks
 - Firewall and ISP considerations for outbound SMTP on TCP port 25
 - Troubleshooting delivery, SPF, connector, and device issues
-- Printable engineer worksheet for ticket notes and change records
+- Fillable engineer setup record for ticket notes and change records
+- One-click copy of generated setup notes to the clipboard
 
 ## Recommended Setup Path
 
