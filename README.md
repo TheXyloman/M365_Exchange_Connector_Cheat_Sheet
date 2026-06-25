@@ -1,6 +1,6 @@
 # Exchange M365 Connector Scan-to-Email Cheat Sheet
 
-A standalone visual runbook for 1st and 2nd line helpdesk engineers setting up scan-to-email through Microsoft 365 SMTP relay.
+A standalone visual runbook for engineers setting up scan-to-email through Microsoft 365 SMTP relay.
 
 The guide walks engineers through creating an Exchange Online inbound connector authenticated by a static public IP address, finding the tenant MX endpoint, updating SPF, configuring common printer brands, testing SMTP connectivity, and troubleshooting common failures.
 
